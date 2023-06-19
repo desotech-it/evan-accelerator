@@ -1,0 +1,40 @@
+accelerator:
+  displayName: Evan Accelerator
+  description: Contains just a README
+  iconUrl: https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.algrama.it%2F&psig=AOvVaw2zKHQtt_8ErUW0mb85ZO_P&ust=1687256568003000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCPC619SOz_8CFQAAAAAdAAAAABAE
+  tags:
+    - simple
+    - evan
+    - getting-started
+# Place this after the 'tags' section from the previous step
+  options:
+    - name: firstConfigurableParameter
+      inputType: text
+      label: The text used to replace the first placeholder text in the README.md. Converted to lowercase.
+      defaultValue: Configurable Parameter 1
+      required: true
+    - name: secondConfigurableParameterCheckbox
+      inputType: checkbox
+      dataType: boolean
+      label: Enable to configure the second configurable parameter, otherwise use the default value.
+    - name: secondConfigurableParameter
+      inputType: text
+      label: The text used to replace the second placeholder text in the README.md. Converted to lowercase.
+      defaultValue: Configurable Parameter 2
+      dependsOn:
+        name: secondConfigurableParameterCheckbox
+# Place this after the `options` section from the previous step
+engine:
+  merge:
+    - include: [ "README.md" ]
+      chain:
+        - type: ReplaceText
+          substitutions:
+            - text: "CONFIGURABLE_PARAMETER_1"
+              with: "#firstConfigurableParameter.toLowerCase()"
+        - condition: "#secondConfigurableParameterCheckbox"
+          chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "CONFIGURABLE_PARAMETER_2"
+                with: "#secondConfigurableParameter.toLowerCase()"
